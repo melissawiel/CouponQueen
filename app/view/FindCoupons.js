@@ -4,7 +4,6 @@ Ext.define('CouponQueen.view.FindCoupons', {
 
     config: {
         title:'Add Coupons',
-		centered: 'true',
 		items: [{
 				xtype: 'titlebar',
 			    docked: 'top',
@@ -17,8 +16,11 @@ Ext.define('CouponQueen.view.FindCoupons', {
                 xtype: 'button',
 				ui: 'lightblue',
 				text: 'Coupon of the Day',
-				width: '30%',
-								align:'right',
+				width: '80%',
+				layout: {
+					align: 'center',
+					pack: 'center'
+				},
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
 						Ext.Viewport.animateActiveItem({
@@ -112,7 +114,7 @@ Ext.define('CouponQueen.view.FindCoupons', {
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
 						Ext.Viewport.animateActiveItem({
-				            xtype: 'couponday',
+				            xtype: 'scanner',
 							items: [{
 								xtype: 'toolbar',
 								title: 'Coupon of the Day',

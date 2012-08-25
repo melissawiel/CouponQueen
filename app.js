@@ -5,9 +5,9 @@ Ext.application({
         'Ext.MessageBox'
     ],
 
-	views: ['Main','BrowseMain','FindCoupons','CouponDay','Store','Random'],
-	stores: ['BrowseStore'],
-	models: ['BrowseModel'],
+	views: ['Main','BrowseMain','FindCoupons','CouponDay','Store','Random', 'Scanner', 'VSMain', 'AEMain'],
+	stores: ['BrowseStore', 'AEStore', 'VSStore'],
+	models: ['BrowseModel', 'AEModel', 'VSModel'],
 
     icon: {
         '57': 'resources/icons/Icon.png',

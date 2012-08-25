@@ -4,8 +4,7 @@ Ext.define("CouponQueen.view.Main", {
 	
     config: {
         tabBarPosition: 'bottom',
-        items: [
-		{
+        items: [{
             xtype: 'browsemain',
 			iconCls: 'shop1'
         },

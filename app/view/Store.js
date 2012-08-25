@@ -1,10 +1,18 @@
 Ext.define("CouponQueen.view.Store", {
-    extend: 'Ext.Panel',
+    extend: 'Ext.tab.Panel',
 	xtype: 'store',
 
     config: {
-		xtype: 'aelist',
-
-	}
+        tabBarPosition: 'bottom',
+        items: [{
+            xtype: 'aemain',
+			iconCls: 'shop1'
+        },
+		{
+			xtype: 'vsmain',
+			iconCls: 'organize'
+		}
+        ]
+    }
 
 });
