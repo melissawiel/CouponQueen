@@ -6,7 +6,7 @@ Ext.define('CouponQueen.view.VSList', {
     config: {
         title: 'VS Coupons',
         grouped: true,
-        itemTpl: '{Name} {Store}',
+        itemTpl: '{Name}',
 		store: 'VSStore',
 		listeners: {
 			itemtap: function(dView,index,item,e) {

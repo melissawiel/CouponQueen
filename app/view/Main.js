@@ -3,6 +3,8 @@ Ext.define("CouponQueen.view.Main", {
 	xtype: 'main',
 	
     config: {
+		scrollable: true,
+		title: 'Start Saving Money!',
         tabBarPosition: 'bottom',
         items: [{
             xtype: 'browsemain',

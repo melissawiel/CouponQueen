@@ -1,13 +1,15 @@
 Ext.define("CouponQueen.view.Random", {
     extend: 'Ext.Panel',
 	xtype: 'random',
+	requires: ['CouponQueen.store.VSStore'],
 
     config: {
 		scrollable: true,
-		html: ['<br><div align="center"><img src="coupon photos/c1.jpg" width="70%"/>',
-			'<br><br><p>ID: 123<br>',
-			'Store: Piggly Wiggly<br>',
-			'Expires: 12/12/12</p></div>',
+			
+		html: ['<br><div align="center"><img src="coupon photos/vs2.jpg" width="80%"/>',
+			'<br><br><p>ID: 13629473<br>',
+			'Store: VS<br>',
+			'Expires: 11/30/11</p></div>',
 			].join('')
 		}
 });

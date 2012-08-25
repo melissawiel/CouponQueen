@@ -7,7 +7,11 @@ Ext.define('CouponQueen.view.AEDetail', {
         styleHtmlContent: true,
         scrollable: 'vertical',
         tpl: [
-            'Hello!'
+            '<div align="center">',
+			'{Pic}',
+			'<br>ID: {ID}',
+			'<br>Store: {Store}',
+			'<br>Expires: {Expire}</div>',
         ]
     }
 });

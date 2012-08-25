@@ -8,9 +8,10 @@ Ext.define('CouponQueen.store.AEStore', {
             return record.get('Name')[0];
         },
         data: [
-			{ID:"1", Name:"a", Store:"AE", Expire:"12/12/12", Pic:"merr"},
-			{ID:"2", Name:"b", Store:"AE", Expire:"11/11/11", Pic:"bloop"}
-			
+			{ID:"0195832", Name:"Take 15% off", Store:"AE", Expire:"04/04/13", Pic:'<img src="coupon photos/ae1.jpeg" width="80%"/>'},
+			{ID:"8275910", Name:"Save $10 When You Spend $50", Store:"AE", Expire:"11/17/12", Pic:'<img src="coupon photos/ae2.png" width="80%"/>'},
+			{ID:"2049188", Name:"Take 20% off", Store:"AE", Expire:"3/24/13", Pic:'<img src="coupon photos/ae3.jpeg" width="80%"/>'},
+			{ID:"9987201", Name:"Take 25% off", Store:"AE", Expire:"11/22/12", Pic:'<img src="coupon photos/ae4.jpeg" width="80%"/>'},
         ]
     }
 });

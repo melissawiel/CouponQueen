@@ -30,3 +30,8 @@ $neutral-color:#AFC7E6;
 
 // Your custom code goes here...
 @include sencha-button-ui('lightblue',#AFC7E6,'glossy');
+
+
+.list-item {
+	font-size: 300%;
+}
