@@ -1,19 +1,19 @@
-Ext.define('CouponQueen.view.BrowseList', {
+Ext.define('CouponQueen.view.AEList', {
     extend: 'Ext.dataview.List',
-    xtype: 'browselist',
-    requires: ['CouponQueen.store.BrowseStore'],
+    xtype: 'aelist',
+    requires: ['CouponQueen.store.AEStore'],
     
     config: {
-        title: 'Coupons',
+        title: 'AE Coupons',
         grouped: true,
         itemTpl: '{Name} {Store}',
-		store: 'BrowseStore',
+		store: 'AEStore',
 		listeners: {
 			itemtap: function(dView,index,item,e) {
 				var record = dView.getStore().getAt(index);
 				var curview = Ext.Viewport.getActiveItem();
 				Ext.Viewport.animateActiveItem({
-		            xtype: 'browsedetail',
+		            xtype: 'aedetail',
 		            data: record.getData(),
 					items: [{
 						xtype: 'toolbar',

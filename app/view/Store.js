@@ -3,8 +3,8 @@ Ext.define("CouponQueen.view.Store", {
 	xtype: 'store',
 
     config: {
-		html: ['STORE'
-			].join('')
-		}
+		xtype: 'aelist',
+
+	}
 
 });

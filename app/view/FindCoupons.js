@@ -11,11 +11,15 @@ Ext.define('CouponQueen.view.FindCoupons', {
 			    title: 'Find Coupons',
 			},
 			{
+				html:'<br>'
+			},
+			{
                 xtype: 'button',
+				ui: 'lightblue',
 				text: 'Coupon of the Day',
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
-						Ext.Viewport.setActiveItem({
+						Ext.Viewport.animateActiveItem({
 				            xtype: 'couponday',
 							items: [{
 								xtype: 'toolbar',
@@ -27,21 +31,25 @@ Ext.define('CouponQueen.view.FindCoupons', {
 									ui: 'back',
 									text: 'Back',
 									handler: function() {
-											Ext.Viewport.setActiveItem(curview);
+											Ext.Viewport.animateActiveItem(curview, 'fade');
 									}
 								}
 								]
 							}]
-				        })
+				        }, 'fade')
 
 					}
             },
 			{
+				html:'<br>'
+			},
+			{
 				xtype: 'button',
 				text: 'Coupons by Store',
+				ui: 'lightblue',
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
-						Ext.Viewport.setActiveItem({
+						Ext.Viewport.animateActiveItem({
 				            xtype: 'store',
 							items: [{
 								xtype: 'toolbar',
@@ -53,21 +61,25 @@ Ext.define('CouponQueen.view.FindCoupons', {
 									ui: 'back',
 									text: 'Back',
 									handler: function() {
-											Ext.Viewport.setActiveItem(curview);
+											Ext.Viewport.animateActiveItem(curview, 'fade');
 									}
 								}
 								]
 							}]
-				        })
+				        }, 'fade')
 
 					}
+			},
+			{
+				html:'<br>'
 			},
             {
 				xtype: 'button',
 				text: 'Random Coupon',
+				ui: 'lightblue',
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
-						Ext.Viewport.setActiveItem({
+						Ext.Viewport.animateActiveItem({
 				            xtype: 'random',
 							items: [{
 								xtype: 'toolbar',
@@ -79,12 +91,12 @@ Ext.define('CouponQueen.view.FindCoupons', {
 									ui: 'back',
 									text: 'Back',
 									handler: function() {
-											Ext.Viewport.setActiveItem(curview);
+											Ext.Viewport.animateActiveItem(curview, 'fade');
 									}
 								}
 								]
 							}]
-				        })
+				        }, 'fade')
 
 					}
             }]

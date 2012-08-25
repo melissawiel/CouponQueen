@@ -1,7 +1,7 @@
-Ext.define('CouponQueen.model.BrowseModel', {
+Ext.define('CouponQueen.model.VSModel', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['ID', 'Name', 'Store','Expire', 'Pic']
+        fields: ['ID', 'Name','Store', 'Expire', 'Pic']
     },
 
     fullName: function() {

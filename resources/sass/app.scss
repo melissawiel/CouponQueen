@@ -1,8 +1,9 @@
 $base-color: #B3ABD1;
 $active-color: #AFC7E6;
-$page-bg-color: #CBCGD6;
+$page-bg-color: #f7f7f7;
 $loading-spinner-color:black;
 $neutral-color:#AFC7E6;
+
 //$font-family:;
 //$font-color:black;
 
@@ -28,3 +29,4 @@ $neutral-color:#AFC7E6;
 @include pictos-iconmask('organize');
 
 // Your custom code goes here...
+@include sencha-button-ui('lightblue',#AFC7E6,'glossy');
