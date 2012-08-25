@@ -3,8 +3,8 @@ Ext.define('CouponQueen.view.FindCoupons', {
     xtype: 'findcoupons',
 
     config: {
-        title:'FindCoupons',
-
+        title:'Add Coupons',
+		centered: 'true',
 		items: [{
 				xtype: 'titlebar',
 			    docked: 'top',
@@ -17,6 +17,8 @@ Ext.define('CouponQueen.view.FindCoupons', {
                 xtype: 'button',
 				ui: 'lightblue',
 				text: 'Coupon of the Day',
+				width: '30%',
+								align:'right',
 				handler: function() {
 						var curview = Ext.Viewport.getActiveItem();
 						Ext.Viewport.animateActiveItem({
@@ -84,6 +86,36 @@ Ext.define('CouponQueen.view.FindCoupons', {
 							items: [{
 								xtype: 'toolbar',
 								title: 'Random Coupon',
+								docked: 'top',
+								items: [
+								{
+									xtype: 'button',
+									ui: 'back',
+									text: 'Back',
+									handler: function() {
+											Ext.Viewport.animateActiveItem(curview, 'fade');
+									}
+								}
+								]
+							}]
+				        }, 'fade')
+
+					}
+            },
+			{
+				html:'<br>'
+			},
+			{
+                xtype: 'button',
+				ui: 'lightblue',
+				text: 'Scan Coupon',
+				handler: function() {
+						var curview = Ext.Viewport.getActiveItem();
+						Ext.Viewport.animateActiveItem({
+				            xtype: 'couponday',
+							items: [{
+								xtype: 'toolbar',
+								title: 'Coupon of the Day',
 								docked: 'top',
 								items: [
 								{
