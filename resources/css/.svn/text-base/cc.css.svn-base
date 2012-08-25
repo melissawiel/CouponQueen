@@ -1,0 +1,37 @@
+.cc-box {
+	position: absolute;
+	top:0;
+	bottom:0;
+	right:0;
+	left:0;
+	overflow:hidden;
+}
+
+.cc-wrapper {
+	height: 100%;
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #fff;
+	border-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	overflow: hidden;
+	top:10px;
+	left:0;
+	padding: 10px;
+	margin: 10px;
+}
+
+.cc-board {
+	padding: 10px;
+	border-color: #A3D184;
+	border-style: solid; 
+	border-width: 5px;
+	margin: 10px;
+	background-color: #A3D184;
+	
+
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}

@@ -1,0 +1,27 @@
+Ext.define("Sentify.view.Page10", {
+    extend: 'Ext.Panel',
+	xtype: 'page10',
+
+    config: {
+		layout: {
+			type: 'card'
+		},
+		items: [{
+			xtype: 'carousel',
+			direction: 'vertical',
+			items: [{
+				style: 'align: center; background: #D7DF22; border: 5px solid #5F6925; -moz-border-radius: 5px;-webkit-border-radius: 5px; padding:10px; height:93%; width:95%; margin:2.5%',
+				html: '<div class="cc-board" width="100%"><div align="center">1'
+			},
+			{
+				style: 'align: center; background: #D7DF22; border: 5px solid #5F6925; -moz-border-radius: 5px;-webkit-border-radius: 5px; padding:10px; height:93%; width:95%; margin:2.5%',
+				html: '<div class="cc-board" width="100%"><div align="center">2dklfjsd'
+			},
+			{
+				style: 'align: center; backgroundImage: url("color.jpg"); backgroundSize: cover; backgroundRepeat: no-repeat; backgroundPosition: center; border: 5px solid #A3D184; -moz-border-radius: 5px;-webkit-border-radius: 5px; padding:10px; height:93%; width:95%; margin:2.5%',
+				
+			}]
+		}]
+	}
+
+});

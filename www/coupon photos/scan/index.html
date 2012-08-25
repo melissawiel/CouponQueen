@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<!-- Sencha Animator Version: 1.3 Build: 171 -->
+<head>
+<meta charset="UTF-8">
+<title>scan &middot; Made with Sencha Animator</title>
+
+
+<script type="text/javascript">
+
+
+    if (typeof(AN) === 'undefined') {
+       var AN = {}; 
+    }
+    AN.Controller = function() {
+        return {
+            scenes: {},
+            scenesArray: [],
+            currentSceneID: -1,
+            olElement: null,
+            events: {},
+            useOrmma: false,
+            prefix: "",
+            basePath: "",
+
+            setConfig: function(configData) {
+
+                this.events = configData.events;
+                this.prefix = configData.cssPrefix;
+                this.projectActions = configData.projectActions;
+                this.userData = {};
+                if (configData.basePath) {
+                    this.basePath = configData.basePath;
+                }
+
+                this.olElement = document.querySelector('#' + configData.parentId + ' ol');
+                var liElements = this.olElement.children;
+
+                if (configData.ormma) {
+                    this.useOrmma = true;
+                }
+
+                this.sceneIdByName = {};
+                var scene;
+                for (var i=0; i < configData.scenes.length; i++) {
+                    scene = configData.scenes[i];
+                    scene.element = liElements[i];
+                    this.scenes[scene.id] = scene;
+                    this.scenesArray.push(scene);
+                    if (scene.name) {
+                        this.sceneIdByName[scene.name] = scene.id;
+                    }
+                    
+                }
+
+                this.setupListeners();
+                
+                this.startSceneByID = this.startSceneById; /*compat*/
+                
+                if (this.projectActions.init) {
+                    this.projectActions.init.call(this.userData, this);
+                }
+
+                this.startSceneById(this.scenesArray[0].id);
+
+            },
+
+            runningAnimationCount: 0,
+            browser: 'webkit',
+
+            setupListeners: function() {
+                var me = this;
+
+                var eventName = "webkitAnimationEnd";
+
+                if (document.body.style.MozAnimationName !== undefined) {
+                    eventName = "animationend";
+                    this.browser = "moz";
+                }
+
+                this.olElement.addEventListener(eventName, function() {
+                    me.onAnimationEnd();
+                },false);
+
+                function addMousemoveListenerTo(scene) {
+                    scene.element.addEventListener('mousemove', function(event){
+                        scene.mousemoveAction.call(me.userData,me, event);
+                    }, false);
+                }
+
+                var scene;
+                for (var i=0; i < this.scenesArray.length; i++) {
+                    scene = this.scenesArray[i];
+                    if (scene.mousemoveAction) {
+
+                        addMousemoveListenerTo(scene);
+                    }
+                }
+
+                function addListenerTo(element, eventType, aFunction) {
+                    element.addEventListener(eventType, function(event){
+                        aFunction.call(me.userData,me,event);
+                    }, false);
+                }
+
+                var element, event, type;
+                for (var i=0; i < this.events.length; i++) {
+                    event = this.events[i];
+                    var type = event.type;
+                    if (this.browser === 'moz' && event.mozType) {
+                        type = event.mozType;
+                    }
+                    element = document.getElementById(event.id);
+                    addListenerTo(element, type, event.handler);
+                }
+
+            },
+
+            onAnimationEnd: function() {
+
+                this.runningAnimationCount--;
+
+                if (this.runningAnimationCount === 0) {
+                    var waitTime = this.scenes[this.currentSceneID].endWaitTime;
+                    if (waitTime) {
+                        var me = this;
+                        setTimeout(function(){
+                            me.onSceneFinish();
+                        },waitTime * 1000)
+                    } else {
+                        this.onSceneFinish();
+                    }
+                }
+            },
+            
+            forceRefresh: function(sceneID) {
+                this.forceRefreshValue = this.scenes[sceneID].element.offsetHeight;
+            },
+            
+            startSceneByName: function(name) {
+                var id = this.sceneIdByName[name];
+                if (id !== undefined) {
+                    this.startSceneById(id);
+                }
+            },
+
+            startSceneById: function(sceneID) {
+
+                var restart = false;
+                if (sceneID === this.currentSceneID) {
+                    restart = true;
+                } else if (this.currentSceneID !== -1) {
+                    this.scenes[this.currentSceneID].element.setAttribute('class','');
+                }
+
+                this.runningAnimationCount = this.scenes[sceneID].animationCount;
+
+                this.currentSceneID = sceneID;
+                var nextScene = this.scenes[sceneID];
+
+                if (restart || this.browser === 'moz') {
+                    nextScene.element.setAttribute('class','run restart');
+                    this.forceRefresh(sceneID);
+                }
+                
+                nextScene.element.setAttribute('class','run');
+                
+                if (!restart && this.useOrmma) {
+                   this.ormmaNextScene(nextScene);
+                }
+
+                if (nextScene.startAction) {
+                    nextScene.startAction.call(this.userData, this);
+                }
+            
+                if (nextScene.animationCount === 0 ) {
+                    this.onSceneFinish();
+                }
+
+            },
+
+            replayScene: function() {
+                this.startSceneById(this.currentSceneID);
+            },
+
+            onSceneFinish: function() {
+                if (this.scenes[this.currentSceneID].endAction) {
+                    this.scenes[this.currentSceneID].endAction.call(this.userData,this);
+                }
+            },
+
+            goToNextScene: function() {
+                var nextIndex = this.scenesArray.indexOf(this.scenes[this.currentSceneID]) + 1;
+                var nextScene;
+                if (nextScene = this.scenesArray[nextIndex]) {
+                    this.startSceneById(nextScene.id);
+                }
+            },
+            goToPreviousScene: function() {
+                var previousIndex = this.scenesArray.indexOf(this.scenes[this.currentSceneID]) - 1;
+                var nextScene;
+                if (previousIndex >= 0) {
+                    this.startSceneById(this.scenesArray[previousIndex].id);
+                }
+            },
+            goToURL: function(aURL) {
+                document.location.href = aURL;
+            },
+            
+            getElementById: function(animatorId) {
+                var cssId = this.prefix + animatorId;
+                return document.getElementById(cssId);
+            },
+            getUrlForLocalAsset: function(assetName) {
+                var url = 'assets/' + assetName;
+                if (this.basePath) {
+                    url = this.basePath + '/' + url;
+                }
+                return url;
+            },
+            ormmaNextScene: function(nextScene) {
+                var currentState = ormma.getState();
+
+                if (nextScene.dimensions.expanded) {
+                    //expanded state
+                    //check if we're expanded
+                    var maxSize = ormma.getMaxSize();
+                    if (currentState !== 'expanded') {
+                        ormma.expand({
+                            x:0,
+                            y:0,
+                            width: maxSize.width,
+                            height: maxSize.height
+                        });
+                    }
+
+                    var transform = "";
+                    var elementHeight = nextScene.element.offsetHeight;
+                    var elementWidth = nextScene.element.offsetWidth;
+                    var y = (maxSize.height - elementHeight) / 2;
+                    var x = (maxSize.width - elementWidth) / 2;
+                    transform += " translate3d("+Math.round(x)+"px,"+Math.round(y)+"px,0)";   
+
+                    if (nextScene.dimensions.fit) {
+                        var scaleFactor = Math.min(maxSize.width/elementWidth, maxSize.height/elementHeight);                    
+                        transform += " scale3d("+scaleFactor+","+scaleFactor+",1)";
+                    }
+                    nextScene.element.style.webkitTransform = transform;
+
+                } else {
+                
+                    if (currentState === 'expanded') {
+                        ormma.close();
+                    }
+                    ormma.resize(nextScene.dimensions.width,nextScene.dimensions.height);
+                }
+            }
+        };
+    };
+
+window.addEventListener('load', function(){
+    var configData = {
+        parentId: 'pRw6OLTNN-an-anim',
+        cssPrefix: 'pRw6OLTNN-',
+        ormma: false,
+        mraid: false,
+        scenes: [{id: 0,animationCount: 3,duration: 5.558,lastKeyframeTime: 5.558,dimensions: {height: 320,width: 480,expanded: false,fit: false}}],
+        projectActions: {},
+        events: [],
+        externalResources: []
+    };
+    setTimeout(function(){
+       var controller = new AN.Controller;
+       controller.setConfig(configData);
+    },0);
+}, false);
+</script>
+
+
+<style type="text/css">
+
+#pRw6OLTNN-an-anim > ol {
+    list-style: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+#pRw6OLTNN-an-anim > ol > li {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+#pRw6OLTNN-an-anim > ol > li.run {
+    display: block;
+}
+
+#pRw6OLTNN-an-anim .pRw6OLTNN-an-stage {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+#pRw6OLTNN-an-anim .pRw6OLTNN-an-stage div {
+    position: absolute;
+}
+
+.pRw6OLTNN-an-stage * {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+#pRw6OLTNN-an-anim .pRw6OLTNN-an-stage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#pRw6OLTNN-an-anim .AN-Scene-Description {
+    display: none;
+}
+
+#pRw6OLTNN-an-anim iframe {
+    border: none;
+    height: 100%;
+    width: 100%
+}
+
+#pRw6OLTNN-an-anim .restart * {
+    -webkit-animation-name: none !important;
+}
+
+#pRw6OLTNN-an-obj-1 {
+    -webkit-transform: translate3d(39px, 86px, 0px);
+    width: 352px;
+    height: 612px;
+    top: 0;
+    left: 0;
+}
+
+#pRw6OLTNN-an-obj-1 {
+    -webkit-transform: translate3d(190px, -146px, 0px) scale3d(0.46, 0.46, 1);
+}
+
+#pRw6OLTNN-an-obj-2 {
+    -webkit-transform: translate3d(210px, 128px, 0px) scale3d(0.49, 0.69, 1);
+    width: 138px;
+    height: 90px;
+    top: 0;
+    left: 0;
+}
+
+#pRw6OLTNN-an-obj-2 {
+    -webkit-transform: translate3d(267px, 90px, 0px) scale3d(0.49, 0.69, 1);
+}
+
+#pRw6OLTNN-an-obj-3 {
+    -webkit-transform: translate3d(213px, 120px, 0px) scale3d(0.7, 0.39, 1);
+    width: 138px;
+    height: 90px;
+    top: 0;
+    left: 0;
+}
+
+@-webkit-keyframes ani-pRw6OLTNN-an-obj-3 {
+    0% {
+        -webkit-transform: translate3d(249px, 93px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+
+    9.9265% {
+        -webkit-transform: translate3d(249px, 91px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(26.6deg) scale3d(0.7, 0.39, 1);
+    }
+
+    20.098% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+
+    29.902% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(26deg) scale3d(0.7, 0.39, 1);
+    }
+
+    39.951% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+
+    50% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(26deg) scale3d(0.7, 0.39, 1);
+    }
+
+    59.5588% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+
+    69.7304% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(26deg) scale3d(0.7, 0.39, 1);
+    }
+
+    79.7794% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+
+    90.0735% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(26deg) scale3d(0.7, 0.39, 1);
+    }
+
+    100% {
+        -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+    }
+}
+
+.run #pRw6OLTNN-an-obj-3 {
+    -webkit-animation-name: ani-pRw6OLTNN-an-obj-3;
+    -webkit-animation-duration: 5.0061s;
+    -webkit-animation-delay: 0s;
+    -webkit-animation-fill-mode: both;
+}
+
+#pRw6OLTNN-an-obj-3 {
+    -webkit-transform: translate3d(248px, 92px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+}
+
+.restart #pRw6OLTNN-an-obj-3 {
+    -webkit-transform: translate3d(249px, 93px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(0.7, 0.39, 1);
+}
+
+#pRw6OLTNN-an-obj-4 {
+    -webkit-transform: translate3d(105px, 119px, 0px);
+    width: 158px;
+    height: 64px;
+    top: 0;
+    left: 0;
+}
+
+@-webkit-keyframes ani-pRw6OLTNN-an-obj-4 {
+    0% {
+        -webkit-transform: translate3d(105px, 119px, 0px);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: translate3d(105px, 119px, 0px);
+        opacity: 0;
+    }
+}
+
+.run #pRw6OLTNN-an-obj-4 {
+    -webkit-animation-name: ani-pRw6OLTNN-an-obj-4;
+    -webkit-animation-duration: 0.2699s;
+    -webkit-animation-delay: 4.5092s;
+    -webkit-animation-fill-mode: both;
+}
+
+#pRw6OLTNN-an-obj-4 {
+    -webkit-transform: translate3d(105px, 119px, 0px);
+    opacity: 0;
+}
+
+.restart #pRw6OLTNN-an-obj-4 {
+    -webkit-transform: translate3d(105px, 119px, 0px);
+    opacity: 1;
+}
+
+#pRw6OLTNN-an-obj-5 {
+    -webkit-transform: translate3d(82px, 112px, 0px);
+    width: 158px;
+    height: 64px;
+    top: 0;
+    left: 0;
+}
+
+@-webkit-keyframes ani-pRw6OLTNN-an-obj-5 {
+    0% {
+        -webkit-transform: translate3d(92px, 101px, 0px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translate3d(92px, 102px, 0px);
+        opacity: 1;
+    }
+}
+
+.run #pRw6OLTNN-an-obj-5 {
+    -webkit-animation-name: ani-pRw6OLTNN-an-obj-5;
+    -webkit-animation-duration: 0.5522s;
+    -webkit-animation-delay: 5.0061s;
+    -webkit-animation-fill-mode: both;
+}
+
+#pRw6OLTNN-an-obj-5 {
+    -webkit-transform: translate3d(92px, 102px, 0px);
+    opacity: 1;
+}
+
+.restart #pRw6OLTNN-an-obj-5 {
+    -webkit-transform: translate3d(92px, 101px, 0px);
+    opacity: 0;
+}
+
+#pRw6OLTNN-an-scene-0 .pRw6OLTNN-an-stage {
+    height: 320px;
+    width: 480px;
+    background-color: rgba(203,198,214,1);
+}
+
+</style>
+
+
+
+</head>
+<body style="margin:0;">
+<div id="pRw6OLTNN-an-anim"><ol>
+
+<li id="pRw6OLTNN-an-scene-0" >
+<div class="pRw6OLTNN-an-stage">
+    <div id="pRw6OLTNN-an-obj-1"><div><img  height="612" width="352"  src="assets/armlessqueen.png"></div></div>
+    <div id="pRw6OLTNN-an-obj-2"><div><img  height="90" width="138"  src="assets/forearm.png"></div></div>
+    <div id="pRw6OLTNN-an-obj-3"><div><img  height="90" width="138"  src="assets/hand.png"></div></div>
+    <div id="pRw6OLTNN-an-obj-4"><div><img  height="64" width="158"  src="assets/message2.png"></div></div>
+    <div id="pRw6OLTNN-an-obj-5"><div><img  height="64" width="158"  src="assets/messagedkfjdkfj.png"></div></div>
+</div>
+</li>
+
+</ol></div>
+
+</body>
+</html>
