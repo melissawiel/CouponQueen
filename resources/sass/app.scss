@@ -24,4 +24,7 @@ $neutral-color:#AFC7E6;
 @include sencha-form;
 @include sencha-msgbox;
 
+@include pictos-iconmask('shop1');
+@include pictos-iconmask('organize');
+
 // Your custom code goes here...

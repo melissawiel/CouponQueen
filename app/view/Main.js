@@ -5,13 +5,12 @@ Ext.define("CouponQueen.view.Main", {
     config: {
         tabBarPosition: 'bottom',
         items: [{
-			xtype: 'home'
-		},
-        {
-            xtype: 'browsemain'
+            xtype: 'browsemain',
+			iconCls: 'shop1'
         },
 		{
-			xtype: 'input'
+			xtype: 'findcoupons',
+			iconCls: 'organize'
 		}
         ]
     }

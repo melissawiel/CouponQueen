@@ -5,7 +5,7 @@ Ext.application({
         'Ext.MessageBox'
     ],
 
-	views: ['Main','BrowseMain','Home','Input'],
+	views: ['Main','BrowseMain','FindCoupons','CouponDay','Store','Random'],
 	stores: ['BrowseStore'],
 	models: ['BrowseModel'],
 
