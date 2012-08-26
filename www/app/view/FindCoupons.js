@@ -145,11 +145,33 @@ Ext.define('CouponQueen.view.FindCoupons', {
 									handler: function() {
 											Ext.Viewport.animateActiveItem(curview, 'fade');
 									}
-								},
+								}
+								]
+							}]
+				        }, 'fade')
+
+					}
+            },
+			{
+                xtype: 'button',
+				ui: 'lightblue',
+				text: 'Compare Your Coupon',
+				margin:'62',
+				padding: '40',
+				width: '80%',
+				handler: function() {
+						var curview = Ext.Viewport.getActiveItem();
+						Ext.Viewport.animateActiveItem({
+				            xtype: 'compare',
+							items: [{
+								xtype: 'toolbar',
+								title: 'Compare Your Coupon',
+								docked: 'top',
+								items: [
 								{
 									xtype: 'button',
-									ui: 'square',
-									text: 'Add',
+									ui: 'back',
+									text: 'Back',
 									handler: function() {
 											Ext.Viewport.animateActiveItem(curview, 'fade');
 									}

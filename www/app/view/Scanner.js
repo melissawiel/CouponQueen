@@ -3,8 +3,7 @@ Ext.define("CouponQueen.view.Scanner", {
 	xtype: 'scanner',
 
     config: {
-		scrollable: true,
-		html: ['<br><div align="center"><img src="coupon photos/c1.jpg" width="70%"/>'
-			].join('')
+		html: '<div align="center"><iframe src="coupon photos/scan/index.html" style="border: 20px solid #CBCGD6; -moz-border-radius: 5px;-webkit-border-radius: 5px">',
+		
 		}
 });

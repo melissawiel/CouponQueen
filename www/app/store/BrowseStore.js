@@ -17,6 +17,13 @@ Ext.define('CouponQueen.store.BrowseStore', {
 			{ID:"8275910", Name:"Save $10 When You Spend $50", Store:"AE", Expire:"11/17/12", Pic:'<img src="coupon photos/ae2.png" width="80%"/>'},
 			{ID:"2049188", Name:"Take 20% off", Store:"AE", Expire:"3/24/13", Pic:'<img src="coupon photos/ae3.jpeg" width="80%"/>'},
 			{ID:"9987201", Name:"Take 25% off", Store:"AE", Expire:"11/22/12", Pic:'<img src="coupon photos/ae4.jpeg" width="80%"/>'},
-        ]
+       		
+{ID:"3338296", Name:"90% off Summer Items", Store:"F21", Expire:"11/22/12", Pic:'<img src="coupon photos/f2.png" width="80%"/>'},
+	{ID:"3872052", Name:"70% off for the Military", Store:"F21", Expire:"11/22/12", Pic:'<img src="coupon photos/f3.gif" width="80%"/>'},
+	{ID:"9987201", Name:"90% off Summer Items", Store:"F21", Expire:"11/22/12", Pic:'<img src="coupon photos/f4.jpeg" width="80%"/>'},
+	{ID:"0492784", Name:"10% off 10$ or more", Store:"F21", Expire:"11/22/12", Pic:'<img src="coupon photos/f5.jpeg" width="80%"/>'},
+	{ID:"2222784", Name:"10% off", Store:"F21", Expire:"11/22/12", Pic:'<img src="coupon photos/forever21.jpg" width="80%"/>'},
+	
+ ]
     }
 });
